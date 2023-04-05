@@ -1,6 +1,5 @@
 const contactsOperations = require('./contacts');
 
-// commander
 const { Command } = require('commander');
 const program = new Command();
 program
@@ -36,6 +35,18 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
       console.log(newContact);
       break;
 
+    case 'updateById':
+      const updateContact = await contactsOperations.updateBuId(id, {
+        name,
+        email,
+        phone,
+      });
+      if (!updateContact) {
+        throw new Error(`Contact with id=${id} not found`);
+      }
+      console.log(updateContact);
+      break;
+
     case 'remove':
       const remuveContact = await contactsOperations.removeContact(id);
       console.log(remuveContact);
@@ -46,7 +57,7 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
   }
 };
 
-const start = async (argv) => {
+const start = async argv => {
   try {
     await invokeAction(argv);
   } catch (error) {
@@ -74,3 +85,12 @@ start(argv);
 // remove
 // const id = '7f3f7182-e941-4477-ae69-5265dc58a942';
 // invokeAction({ action: 'remove', id });
+
+//update
+// invokeAction({
+//   action: 'updateById',
+//   id: '90dfbbf8-597b-4156-83be-7c02527ad91c',
+//   name: 'Niki',
+//   email: 'nikitchenkoroman25@gmail.com',
+//   phone: 123123123123,
+// });
